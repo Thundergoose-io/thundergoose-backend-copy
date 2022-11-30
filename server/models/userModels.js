@@ -1,10 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize('localdev', 'localdev', 'localdev', {
-  host: 'localhost',
-  port: process.env.DB_PORT,
-  dialect: 'postgres',
-});
+const sequelize = new Sequelize(process.env.DB_URI);
 
 const User = sequelize.define('User', {
   id: {

@@ -46,6 +46,7 @@ apiController.getTranslation = async (req, res, next) => {
 
     // storing text in form of the string on the response locals object
     res.locals.text = responseText.join('');
+    console.log(res.locals.text);
   } catch (err) {
     // error handling
     const ourErr = {
