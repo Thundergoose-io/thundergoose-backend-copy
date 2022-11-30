@@ -7,7 +7,7 @@ const express = require("express");
 
 const app = express();
 const { PORT } = process.env;
-const auth = require("./models/userModels");
+const { auth } = require("./models/userModels");
 
 auth();
 

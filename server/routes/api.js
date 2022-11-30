@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post(
   '/',
-  apiController.basicTestRunner,
   apiController.getTranslation,
   (req, res, next) => {
     res
