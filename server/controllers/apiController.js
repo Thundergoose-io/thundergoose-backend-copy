@@ -16,7 +16,7 @@ apiController.basicTestRunner = (req, res, next) => {
 
 // middleware for translating code into plain english
 apiController.getTranslation = async (req, res, next) => {
-  console.log(req.body);
+
   // get the data from the body on the request
   const { language } = req.body; // Python, JavaScript...
   const { text } = req.body; // code...
@@ -46,16 +46,50 @@ apiController.getTranslation = async (req, res, next) => {
 
     // storing text in form of the string on the response locals object
     res.locals.text = responseText.join('');
-    console.log(res.locals.text);
+
   } catch (err) {
     // error handling
     const ourErr = {
       log: 'Express error handler caught error in the getTranslation apiController',
     };
-    next(ourErr);
+    return next(ourErr);
   }
+  return next();
+};
 
-  next();
+// Middleware for calculating the time complexity of a function
+apiController.getTimeComplexity = async (req, res, next) => {
+  const { text } = req.body;
+  const tempreture = 0.7;
+  try {
+
+    const response = await openai.createCompletion({
+      model: 'text-davinci-002', 
+      // Prompt adjusted to communicate to a different API
+      prompt: `${text} \n The time complexity of this function is`,
+      temperature: tempreture,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    });
+
+    const responseText = response.data.choices[0].text.split('');
+    while (responseText[0] === '\n' && responseText.length > 1) {
+      responseText.shift();
+    }
+
+    // Stored text in form of the string on the response locals object
+    res.locals.complexityText = responseText.join('');
+
+  } catch (err) {
+    const ourErr = {
+      log: 'Express error handler caught error in the getTimeComplexity apiController',
+    };
+    return next(ourErr);
+  };
+
+  return next();
 };
 
 module.exports = apiController;
