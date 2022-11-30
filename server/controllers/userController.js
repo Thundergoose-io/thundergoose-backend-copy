@@ -29,6 +29,7 @@ userController.createUser = async (req, res, next) => {
 };
 
 userController.login = async (req, res, next) => {
+  console.log(req.session);
   const { username, password } = req.body;
   if (!username || !password) {
     return next({
@@ -45,12 +46,19 @@ userController.login = async (req, res, next) => {
     });
     if (user[0].password === password) {
       res.locals.user = user[0].username;
+      req.session.loggedIn = true;
+      req.session.user = user[0].username;
+      console.log(req.session);
       return next();
     }
     return res.status(403).send('Incorrect username or password');
   } catch (error) {
     return res.status(403).send('Incorrect username or password');
   }
+};
+
+userController.checkStatus = async (req, res, next) => {
+  return res.status(200).json({ loggedIn: req.session.loggedIn ? true : false, user: req.session.user });
 };
 
 module.exports = userController;

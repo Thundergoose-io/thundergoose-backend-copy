@@ -16,7 +16,6 @@ apiController.basicTestRunner = (req, res, next) => {
 
 // middleware for translating code into plain english
 apiController.getTranslation = async (req, res, next) => {
-
   // get the data from the body on the request
   const { language } = req.body; // Python, JavaScript...
   const { text } = req.body; // code...
