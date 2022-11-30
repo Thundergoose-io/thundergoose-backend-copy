@@ -4,6 +4,9 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const requestController = require('../controllers/requestController');
+const { route } = require('./api');
+
+router.get('/status', userController.checkStatus);
 
 router.post('/new', userController.createUser, (req, res) => res.status(200).send('user created'));
 
