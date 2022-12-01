@@ -5,14 +5,21 @@ const querystring = require('querystring');
 const oauthController = {};
 
 oauthController.getToken = async (req, res, next) => {
-  console.log('WE R IN GET TOKEN OAUTH CONTROLLER');
-  const { code } = req.query.code;
+  console.log(req.body);
+  const codeForReq = req.body.code;
+  console.log(codeForReq);
   //  (code);
+  console.log(process.env.CLIENT_ID);
+  console.log(process.env.CLIENT_SECRET);
   const githubToken = await axios
-    .post(`https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client__secret=${process.env.CLIENT_SECRET}&code=${code}`)
+    .post(`https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${codeForReq}`)
     .then((response) => response.data);
   const decoded = querystring.parse(githubToken);
+  console.log('decode ------------------------------------------');
+  console.log(decoded);
   const accessToken = decoded.access_token;
+  console.log('access ------------------------------------------');
+  console.log(accessToken);
 
   // res.locals.user = axios
   //   .get('https://api.github.com/user', {
