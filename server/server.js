@@ -24,7 +24,11 @@ app.use(cors());
 const apiRouter = require('./routes/api');
 const userRouter = require('./routes/user');
 // oauthController.getToken,
-app.post('/token', oauthController.getToken, (req, res) => res.sendStatus(200));
+app.post(
+  '/token',
+  oauthController.getToken,
+  (req, res) => res.send(res.locals.token)
+);
 // route handler to respond with main app
 app.use('/api', apiRouter);
 

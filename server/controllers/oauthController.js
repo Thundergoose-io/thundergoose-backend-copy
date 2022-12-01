@@ -20,12 +20,14 @@ oauthController.getToken = async (req, res, next) => {
   const accessToken = decoded.access_token;
   console.log('access ------------------------------------------');
   console.log(accessToken);
-
-  // res.locals.user = axios
+  res.locals.token = accessToken;
+  // const username = await axios
   //   .get('https://api.github.com/user', {
-  //     headers: { Authorization: `Bearer ${accessToken}` }
+  //     headers: { Authorization: `token ${accessToken}` }
   //   })
-  //   .then((user) => user.data);
+  //   .then((response) => console.log(response));
+  // console.log('USERNAME ------------------------------------------');
+  // console.log(username);
   return next();
 };
 
