@@ -9,6 +9,8 @@ const app = express();
 const { PORT } = process.env;
 const { auth } = require("./models/userModels");
 
+const oauthController = require('./controllers/oauthController');
+
 auth();
 
 // app.use(express.static('stylesheets'));
@@ -21,7 +23,8 @@ app.use(cors());
  */
 const apiRouter = require("./routes/api");
 const userRouter = require("./routes/user");
-
+// oauthController.getToken,
+app.get('/token', (req, res, next) => { console.log(req.query.code); return next(); }, oauthController.getToken, (req, res) => res.sendStatus(200));
 // route handler to respond with main app
 app.use("/api", apiRouter);
 
@@ -44,7 +47,7 @@ app.use((err, req, res, next) => {
   };
 
   const errorObj = Object.assign(defaultErr, err);
-  console.log(errorObj.log);
+  // console.log(errorObj.log);
 
   res.status(errorObj.status).json(errorObj.message);
 });
