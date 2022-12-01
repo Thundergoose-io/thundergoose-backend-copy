@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
+
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
@@ -8,6 +9,9 @@ const express = require('express');
 
 const app = express();
 const { PORT } = process.env;
+
+
+const oauthController = require('./controllers/oauthController');
 const { constants } = require('buffer');
 const { auth } = require('./models/userModels');
 const session = require('express-session');
@@ -34,6 +38,13 @@ app.use(session({
 const apiRouter = require('./routes/api');
 const userRouter = require('./routes/user');
 
+// oauthController.getToken,
+app.post(
+  '/token',
+  oauthController.getToken,
+  (req, res) => res.send(res.locals.token)
+);
+
 // route handler to respond with main app
 app.use('/api', apiRouter);
 
@@ -48,7 +59,7 @@ app.use('*', (req, res, next) => {
   next(errorObj);
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 400,
@@ -56,7 +67,7 @@ app.use((err, req, res, next) => {
   };
 
   const errorObj = Object.assign(defaultErr, err);
-  console.log(errorObj.log);
+  // console.log(errorObj.log);
 
   res.status(errorObj.status).json(errorObj.message);
 });
