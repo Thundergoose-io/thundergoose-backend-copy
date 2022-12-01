@@ -3,10 +3,11 @@ const querystring = require('querystring');
 // const db = require('../models/userModels');
 
 const oauthController = {};
-oauthController.getCode = async (req, res, next) => {
-  console.log('WE ARE IN GET CODE OF OAUTHCONTROLLER');
-  const code = await axios
-}
+// oauthController.getCode = async (req, res, next) => {
+//   console.log('WE ARE IN GET CODE OF OAUTHCONTROLLER');
+//   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri${process.env.gitHubRedirectURL}?path='/'&scope=user:email`);
+//   return next();
+// };
 oauthController.getToken = async (req, res, next) => {
   console.log('WE R IN GET TOKEN OAUTH CONTROLLER');
   const { code } = req.query.code;
