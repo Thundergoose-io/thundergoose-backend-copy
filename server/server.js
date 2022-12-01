@@ -1,13 +1,13 @@
-require("dotenv").config();
-const bodyParser = require("body-parser");
-const cors = require("cors");
+require('dotenv').config();
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const path = require("path");
-const express = require("express");
+const path = require('path');
+const express = require('express');
 
 const app = express();
 const { PORT } = process.env;
-const { auth } = require("./models/userModels");
+const { auth } = require('./models/userModels');
 
 auth();
 
@@ -19,28 +19,29 @@ app.use(cors());
 /**
  * require routers
  */
-const apiRouter = require("./routes/api");
-const userRouter = require("./routes/user");
+const apiRouter = require('./routes/api');
+const userRouter = require('./routes/user');
+const tokenRouter = require('./routes/token');
 
 // route handler to respond with main app
-app.use("/api", apiRouter);
+app.use('/api', apiRouter);
+app.use('/token', tokenRouter);
+app.use('/user', userRouter);
 
-app.use("/user", userRouter);
-
-app.use("*", (req, res, next) => {
+app.use('*', (req, res, next) => {
   const errorObj = {
-    log: "Page not found",
+    log: 'Page not found',
     status: 404,
-    message: { err: "Error 404: Page not Found" },
+    message: { err: 'Error 404: Page not Found' },
   };
   next(errorObj);
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const defaultErr = {
-    log: "Express error handler caught unknown middleware error",
+    log: 'Express error handler caught unknown middleware error',
     status: 400,
-    message: { err: "An error occurred" },
+    message: { err: 'An error occurred' },
   };
 
   const errorObj = Object.assign(defaultErr, err);
